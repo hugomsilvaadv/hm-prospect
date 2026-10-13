@@ -4,7 +4,7 @@
 
 ## Operator checklist
 
-1. Confirm exact Instagram @handle. Do not assume @ekpria if a variation was registered.
+1. Official Instagram profile confirmed by the operator: **[@ekpria](https://www.instagram.com/ekpria/)**. Keep this handle in business configuration.
 2. Set professional account category to **Business / Serviços empresariais** or the closest available.
 3. Set profile display name to **EKPRIA | Gestão de Recebíveis**.
 4. Upload the approved brand photo optimized for circular profile crop.
