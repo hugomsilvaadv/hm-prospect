@@ -1,12 +1,12 @@
 {
   "ownerName": "{{OWNER_NAME}}",
   "ownerRole": "{{OWNER_ROLE}}",
-  "companyName": "{{HM_COMPANY_NAME}}",
-  "companyWebsite": "{{COMPANY_WEBSITE}}",
-  "instagramHandle": "{{INSTAGRAM_HANDLE}}",
-  "whatsappLink": "{{WHATSAPP_LINK}}",
-  "affiliateGroupLink": "{{AFFILIATE_GROUP_LINK_OPTIONAL}}",
-  "oneLinePitch": "Terceirizamos a gestão administrativa de cobrança de empresas.",
+  "companyName": "EKPRIA",
+  "companyWebsite": "{{EKPRIA_WEBSITE_WHEN_AVAILABLE}}",
+  "instagramHandle": "{{EKPRIA_INSTAGRAM_HANDLE}}",
+  "whatsappLink": "{{EKPRIA_COMMERCIAL_WHATSAPP_WHEN_AVAILABLE}}",
+  "affiliateGroupLink": "",
+  "oneLinePitch": "Gestão terceirizada do contas a receber e da cobrança administrativa para empresas.",
   "howItWorks": [
     "A empresa envia sua carteira de recebíveis",
     "Acompanhamos vencimentos e negociamos atrasados nos limites autorizados",
