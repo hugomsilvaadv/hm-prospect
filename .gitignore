@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+config/business.json
+.chrome-profile/
+*.db
+*.db-*
+data/
+backups/
+screenshots/
+traces/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store

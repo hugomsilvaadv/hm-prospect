@@ -1,0 +1,20 @@
+@import "tailwindcss";
+:root { color-scheme: dark; font-family: Arial, Helvetica, sans-serif; background:#080f1b; color:#e5edf8; }
+body {margin:0;min-height:100vh;background:#080f1b;color:#e5edf8;}
+main {max-width:1150px;margin:auto;padding:28px 22px;}
+header {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+h1 {font-size:30px;font-weight:750;}h2 {font-size:19px;font-weight:650;}p {color:#a6b5cd;}
+a {color:#86b8ff;text-decoration:underline;}small {color:#8f9ebb;}
+.panel {border:1px solid #23354e;border-radius:14px;background:#111c2c;padding:20px;}
+.stats,.two {display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.stats strong {display:block;font-size:30px;margin:8px 0;}
+section {margin-top:18px;}button {cursor:pointer;background:#3671da;color:white;border:0;border-radius:8px;padding:10px 14px;font-weight:650;}
+button.warn {background:#a44856;}button.minor {background:#273b55;}
+input,select,textarea {padding:10px;background:#0b1523;color:white;border:1px solid #38516c;border-radius:7px;width:100%;max-width:100%;}
+label {display:block;color:#bfcde1;margin-bottom:5px;font-size:13px;}
+form {display:flex;flex-direction:column;gap:10px;}
+table {border-collapse:collapse;width:100%;font-size:13px;}td,th {border-bottom:1px solid #2a3a50;padding:12px 7px;text-align:left;}th {color:#acbfdc;}
+.scroll {overflow-x:auto;}td form {display:inline-flex;}
+.muted {color:#8f9ebb}.tag {display:inline-block;font-size:12px;background:#243a55;border-radius:6px;padding:5px 8px;}
+.login {max-width:440px;margin:9vh auto;}
+@media(max-width:720px){main{padding:14px;}h1{font-size:25px;}}

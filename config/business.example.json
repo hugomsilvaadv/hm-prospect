@@ -1,0 +1,42 @@
+{
+  "ownerName": "{{OWNER_NAME}}",
+  "ownerRole": "{{OWNER_ROLE}}",
+  "companyName": "{{HM_COMPANY_NAME}}",
+  "companyWebsite": "{{COMPANY_WEBSITE}}",
+  "instagramHandle": "{{INSTAGRAM_HANDLE}}",
+  "whatsappLink": "{{WHATSAPP_LINK}}",
+  "affiliateGroupLink": "{{AFFILIATE_GROUP_LINK_OPTIONAL}}",
+  "oneLinePitch": "Terceirizamos a gestão administrativa de cobrança de empresas.",
+  "howItWorks": [
+    "A empresa envia sua carteira de recebíveis",
+    "Acompanhamos vencimentos e negociamos atrasados nos limites autorizados",
+    "Entregamos relatórios e acompanhamento contínuo"
+  ],
+  "revenueModel": "Mensalidade contratual definida conforme volume e escopo; comissionamento somente quando contratado.",
+  "marketJargon": {
+    "BPO de cobrança": "Terceirização operacional de cobrança administrativa",
+    "régua de cobrança": "Sequência de ações e lembretes conforme idade do título"
+  },
+  "verifiedClaims": [],
+  "unverifiedClaims": [
+    "Redução comprovada da inadimplência",
+    "Garantia de recuperação",
+    "Percentual específico de sucesso"
+  ],
+  "icpSegments": [
+    "Distribuidoras e atacadistas",
+    "Fornecedores B2B",
+    "Prestadoras de serviços empresariais"
+  ],
+  "icpKeywords": [
+    "distribuidora",
+    "atacado",
+    "fornecedor industrial",
+    "materiais de construção"
+  ],
+  "affiliateTopics": [],
+  "geography": [
+    "Ribeirão Preto, SP",
+    "Sete Lagoas, MG"
+  ]
+}

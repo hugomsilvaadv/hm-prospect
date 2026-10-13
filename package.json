@@ -1,0 +1,44 @@
+{
+  "name": "hm-prospect",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "dev": "concurrently -k -n web,worker \"next dev -H 127.0.0.1\" \"tsx watch src/worker/index.ts\"",
+    "build": "next build",
+    "start": "concurrently -k -n web,worker \"next start -H 127.0.0.1\" \"tsx src/worker/index.ts\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "db": "tsx src/db/migrate.ts",
+    "backup": "tsx scripts/backup.ts"
+  },
+  "dependencies": {
+    "next": "15.5.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "drizzle-orm": "0.44.5",
+    "better-sqlite3": "12.2.0",
+    "openai": "5.23.0",
+    "playwright": "1.55.0",
+    "zod": "4.0.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "7.6.13",
+    "@types/node": "24.3.0",
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "concurrently": "9.2.1",
+    "drizzle-kit": "0.31.4",
+    "eslint": "9.34.0",
+    "eslint-config-next": "15.5.0",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "tailwindcss": "4.1.12",
+    "@tailwindcss/postcss": "4.1.12"
+  }
+}
