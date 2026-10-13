@@ -10,7 +10,7 @@ export default function Dashboard(){
  const spent=sqlite.prepare('SELECT COALESCE(SUM(estimated_cost_usd),0) AS total FROM ai_calls').get() as {total:number};
  const events=sqlite.prepare('SELECT type,lead_id,created_at FROM events ORDER BY id DESC LIMIT 10').all() as {type:string;lead_id:number|null;created_at:number}[];
  const paused=isPaused();
- return <main><header><div><small>PAINEL COMERCIAL • EXECUÇÃO LOCAL</small><h1>HM Prospect</h1><p>Instagram → interesse comercial → negociação → WhatsApp</p></div><form action={signOut}><button className="minor">Sair</button></form></header>
+ return <main><header><div><small>PAINEL COMERCIAL • EXECUÇÃO LOCAL</small><h1>EKPRIA Prospect</h1><p>Captação B2B → qualificação → reunião → proposta</p></div><form action={signOut}><button className="minor">Sair</button></form></header>
  <section className="stats">
   <div className="panel"><small>Empresas e perfis</small><strong>{counts.total}</strong></div>
   <div className="panel"><small>Interessados</small><strong>{counts.interested}</strong></div>
