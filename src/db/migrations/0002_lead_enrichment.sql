@@ -1,0 +1,3 @@
+ALTER TABLE leads ADD COLUMN location TEXT NOT NULL DEFAULT '';
+ALTER TABLE leads ADD COLUMN source_url TEXT NOT NULL DEFAULT '';
+CREATE INDEX IF NOT EXISTS lead_location_idx ON leads(location);

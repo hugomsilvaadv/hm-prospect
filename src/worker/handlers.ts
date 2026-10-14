@@ -1,6 +1,7 @@
 import { sqlite } from '../db/client';
-import { getBusiness } from '../lib/business';
-import { canSend,normalizeHandle,scoreLead } from '../lib/rules';
+import { getIcpConfig } from '../lib/business';
+import { qualifyCompany } from '../features/leads/qualification';
+import { canSend,normalizeHandle } from '../lib/rules';
 import { logEvent,isPaused,setPaused } from '../lib/jobs';
 import { inBusinessHours } from '../lib/security';
 import { discoverProfiles,sendFirstDm } from '../integrations/browser/instagram';
@@ -20,14 +21,14 @@ function leadFor(job:Job):Lead{
 async function discover(job:Job):Promise<void>{
  const payload=JSON.parse(job.payload) as {keyword?:string};
  if(!payload.keyword)throw new Error('KEYWORD_MISSING');
- const business=getBusiness();
+ const icp=getIcpConfig();
  const rows=await discoverProfiles(payload.keyword,job.id);
  let created=0;
  for(const candidate of rows){
   const handle=normalizeHandle(candidate.handle);
   if(!handle)continue;
   const now=Date.now();
-  const score=scoreLead(candidate.displayName+' '+payload.keyword,business.icpKeywords,false);
+  const score=qualifyCompany({segment:payload.keyword,bio:candidate.displayName,keywords:icp.icpKeywords,targetLocations:icp.geography}).score;
   const result=sqlite.prepare('INSERT OR IGNORE INTO leads(handle,display_name,origin,segment,score,created_at,updated_at) VALUES(?,?,?,?,?,?,?)')
    .run(handle,candidate.displayName,'instagram_search:'+payload.keyword,payload.keyword,score,now,now);
   if(result.changes){created++;logEvent('lead_discovered',Number(result.lastInsertRowid),{keyword:payload.keyword});}

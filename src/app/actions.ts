@@ -4,8 +4,10 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { sqlite } from '@/db/client';
 import { queueJob, logEvent, setPaused } from '@/lib/jobs';
-import { getBusiness } from '@/lib/business';
-import { normalizeHandle, scoreLead } from '@/lib/rules';
+import { getIcpConfig } from '@/lib/business';
+import { qualifyCompany } from '@/features/leads/qualification';
+import { parseProspectCsv } from '@/features/leads/csv';
+import { normalizeHandle } from '@/lib/rules';
 import { validAdminToken } from '@/lib/security';
 
 async function authenticate():Promise<void>{
@@ -27,12 +29,14 @@ export async function createLead(form:FormData):Promise<void>{
  const bio=String(form.get('bio')||'').slice(0,1800);
  const displayName=String(form.get('displayName')||'').slice(0,120);
  const flow=form.get('flow')==='affiliates'?'affiliates':'customers';
- const business=getBusiness();
- const score=scoreLead(bio,business.icpKeywords,false);
+ const location=String(form.get('location')||'').slice(0,120);
+ const icp=getIcpConfig();
+ const qualification=qualifyCompany({bio,segment,location,keywords:icp.icpKeywords,targetLocations:icp.geography});
+ const score=qualification.score;
  const now=Date.now();
- const out=sqlite.prepare("INSERT OR IGNORE INTO leads(handle,display_name,bio,segment,flow,score,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)")
-   .run(handle,displayName,bio,segment,flow,score,now,now);
- if(out.changes)logEvent('lead_discovered',Number(out.lastInsertRowid),{source:'manual'});
+ const out=sqlite.prepare("INSERT OR IGNORE INTO leads(handle,display_name,bio,segment,location,flow,score,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)")
+   .run(handle,displayName,bio,segment,location,flow,score,now,now);
+ if(out.changes)logEvent('lead_discovered',Number(out.lastInsertRowid),{source:'manual',scoreReasons:qualification.reasons});
  revalidatePath('/');
 }
 export async function queueDiscovery(form:FormData):Promise<void>{
@@ -62,4 +66,34 @@ export async function optOut(form:FormData):Promise<void>{
  sqlite.prepare("UPDATE jobs SET status='cancelled' WHERE lead_id=? AND status='queued'").run(id);
  logEvent('opt_out',id);
  })();revalidatePath('/');
+}
+
+
+/** Import public B2B profile identifiers only. Existing opt-outs are never overwritten. */
+export async function importProspects(form:FormData):Promise<void> {
+ await authenticate();
+ const file=form.get('file');
+ if(!(file instanceof File))throw new Error('Selecione um arquivo CSV.');
+ if(file.size>256*1024)throw new Error('Arquivo excede 256 KB.');
+ const result=parseProspectCsv(await file.text());
+ const icp=getIcpConfig();
+ let created=0,duplicates=0;
+ sqlite.transaction(()=>{
+  const stmt=sqlite.prepare('INSERT OR IGNORE INTO leads(handle,display_name,bio,segment,location,source_url,origin,score,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?)');
+  for(const candidate of result.leads){
+   const qualification=qualifyCompany({
+    segment:candidate.segment,bio:candidate.bio,location:candidate.location,
+    keywords:icp.icpKeywords,targetLocations:icp.geography
+   });
+   const now=Date.now();
+   const added=stmt.run(candidate.handle,candidate.displayName,candidate.bio,candidate.segment,candidate.location,candidate.sourceUrl,'csv',qualification.score,now,now);
+   if(added.changes){
+    created++;
+    logEvent('lead_discovered',Number(added.lastInsertRowid),{source:'csv',scoreReasons:qualification.reasons});
+   }else duplicates++;
+  }
+  logEvent('csv_import_completed',null,{created,duplicates,invalid:result.invalidRows,repeated:result.repeatedRows});
+ })();
+ revalidatePath('/');
+ redirect('/?imported='+created+'&skipped='+(duplicates+result.invalidRows+result.repeatedRows));
 }

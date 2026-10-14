@@ -6,6 +6,8 @@ export const leads = sqliteTable('leads', {
   displayName: text('display_name').notNull().default(''),
   bio: text('bio').notNull().default(''),
   origin: text('origin').notNull().default('manual'),
+  location: text('location').notNull().default(''),
+  sourceUrl: text('source_url').notNull().default(''),
   segment: text('segment').notNull().default(''),
   flow: text('flow', { enum: ['customers','affiliates'] }).notNull().default('customers'),
   score: integer('score').notNull().default(0),

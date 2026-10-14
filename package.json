@@ -8,9 +8,9 @@
   },
   "packageManager": "pnpm@10.19.0",
   "scripts": {
-    "dev": "concurrently -k -n web,worker \"next dev -H 127.0.0.1\" \"tsx watch src/worker/index.ts\"",
+    "dev": "pnpm db && concurrently -k -n web,worker \"next dev -H 127.0.0.1\" \"tsx watch src/worker/index.ts\"",
     "build": "next build",
-    "start": "concurrently -k -n web,worker \"next start -H 127.0.0.1\" \"tsx src/worker/index.ts\"",
+    "start": "pnpm db && concurrently -k -n web,worker \"next start -H 127.0.0.1\" \"tsx src/worker/index.ts\"",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",

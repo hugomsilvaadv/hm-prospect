@@ -32,3 +32,13 @@ export function getBusiness(): Business {
   }
   return business;
 }
+
+
+/** CRM prospect qualification can work before website, WhatsApp and API keys exist. */
+export function getIcpConfig():Pick<Business,'icpSegments'|'icpKeywords'|'geography'> {
+ const preferred=path.resolve(process.cwd(),'config/business.json');
+ const sample=path.resolve(process.cwd(),'config/business.example.json');
+ const file=fs.existsSync(preferred)?preferred:sample;
+ const content=JSON.parse(fs.readFileSync(file,'utf8')) as unknown;
+ return schema.pick({icpSegments:true,icpKeywords:true,geography:true}).parse(content);
+}
