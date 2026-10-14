@@ -17,13 +17,13 @@ Next.js App Router, React, strict TypeScript, Tailwind, Drizzle / SQLite, Playwr
 1. Install Node.js 24 LTS and pnpm.
 2. Copy `.env.example` to `.env`, and configure a unique, long `APP_ADMIN_TOKEN`.
 3. Copy `config/business.example.json` to `config/business.json`. Fill mandatory fields with confirmed business data; keep unverified claims blocked.
-4. Run `pnpm install`, `pnpm db`, `pnpm dev`.
+4. Run `pnpm install`, `pnpm dev` (the development command runs database migrations automatically).
 5. Sign in at http://127.0.0.1:3000.
 6. Keep live messaging **disabled**. Only consider limited tests after the local Chrome session and platform permissions are configured and validated.
 
 ## Current implementation
 
-Database, PT-BR dashboard, manual lead registration, SQLite queue + worker for discovery and queued first approaches, basic CDP adapter, OpenAI classification/drafting and Meta webhook/API foundations. Integration is **incomplete**; no demonstrated real Instagram sends, Meta handoff, or AI-driven campaign optimization. The worker starts paused by default. Initial CI on Node 24 ran migrations, type checking, unit tests and production build successfully; **the upstream 19 acceptance criteria are not satisfied**.
+Database, PT-BR dashboard, manual/CSV lead registration (250 rows per file), public-profile fit scoring with recorded reasons, SQLite queue + worker for discovery and queued first approaches, basic CDP adapter, OpenAI classification/drafting and Meta webhook/API foundations. Integration is **incomplete**; no demonstrated real Instagram sends, Meta handoff, or AI-driven campaign optimization. The worker starts paused by default. Initial CI on Node 24 ran migrations, type checking, unit tests and production build successfully; **the upstream 19 acceptance criteria are not satisfied**.
 
 ## Remaining work
 
@@ -32,3 +32,7 @@ The next technical work is secure Meta ID reconciliation, webhook/API handoff te
 See `AGENTS.md`, `SETUP.md` and `docs/EKPRIA_INSTAGRAM_SETUP.md`.
 
 **Compliance:** Business registration/CNAE, contracts, privacy lawful basis, opt-outs and Instagram messaging restrictions need review before outreach.
+
+## Prospect import
+
+CSV import works locally without Instagram authentication or OpenAI credentials. Use the sample syntax and operator guidance in [`docs/CSV_IMPORT.md`](docs/CSV_IMPORT.md). The fit score is only commercial matching; it is not a prediction of financial difficulty.
