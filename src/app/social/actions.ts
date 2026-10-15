@@ -2,14 +2,14 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { validAdminToken } from '@/lib/security';
+import { validAdminSession } from '@/lib/admin-session';
 import {asFormat,bounded,parseLocalSchedule,type SocialContent} from '@/features/social/policy';
 import {createSocialPost,reviseSocialPost,transitionSocialPost} from '@/features/social/store';
 import {generateSocialContent} from '@/features/social/generator';
 
 async function authenticate():Promise<void>{
  const token=(await cookies()).get('hm_auth')?.value||null;
- if(!validAdminToken(token))throw new Error('Sessão administrativa inválida.');
+ if(!await validAdminSession(token,process.env.APP_ADMIN_TOKEN))throw new Error('Sessão administrativa inválida.');
 }
 function numberField(form:FormData,field:string):number{
  const n=Number(form.get(field));
