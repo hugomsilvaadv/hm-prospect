@@ -62,3 +62,6 @@ export function socialStats(){
  return sqlite.prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN status='draft' THEN 1 ELSE 0 END) AS drafts, SUM(CASE WHEN status='pending_review' THEN 1 ELSE 0 END) AS pending, SUM(CASE WHEN status='approved' THEN 1 ELSE 0 END) AS approved FROM social_posts")
   .get() as {total:number;drafts:number|null;pending:number|null;approved:number|null};
 }
+
+/** Read-only content accessor for the authenticated artwork route. */
+export function getSocialPost(id:number):SocialPost {return getPost(id);}
