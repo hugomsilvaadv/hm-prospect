@@ -12,6 +12,7 @@ export default async function Dashboard({searchParams}:{searchParams:Promise<{im
  const events=sqlite.prepare('SELECT type,lead_id,created_at FROM events ORDER BY id DESC LIMIT 10').all() as {type:string;lead_id:number|null;created_at:number}[];
  const paused=isPaused();
  return <main><header><div><small>PAINEL COMERCIAL • EXECUÇÃO LOCAL</small><h1>EKPRIA Prospect</h1><p>Captação B2B → qualificação → reunião → proposta</p></div><form action={signOut}><button className="minor">Sair</button></form></header>
+ <nav aria-label="Módulos"><a href="/social" className="tag">✦ Abrir Ekpria Social AI — conteúdo e aprovações</a></nav>
  {notice.imported!==undefined&&<section className="panel" role="status"><strong>Importação concluída:</strong> {Number(notice.imported)||0} novos perfis e {Number(notice.skipped)||0} ignorados ou já cadastrados.</section>}
  <section className="stats">
   <div className="panel"><small>Empresas e perfis</small><strong>{counts.total}</strong></div>
