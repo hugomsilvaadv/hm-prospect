@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import './social.css';
-import {createAiSocialDraft,reviewSocialDraft,saveSocialDraft} from './actions';
+import {createAiSocialDraft,createStarterSocialDrafts,reviewSocialDraft,saveSocialDraft} from './actions';
 import {listSocialPosts,socialStats,type SocialPost} from '@/features/social/store';
+import {slideCount} from '@/features/social/artwork';
 export const dynamic='force-dynamic';
 
 const names={draft:'Rascunho',pending_review:'Aguardando aprovação',approved:'Aprovado',rejected:'Rejeitado'} as const;
@@ -35,6 +36,14 @@ function Post({p}:{p:SocialPost}){
     <button className="sa-secondary">Salvar edição {p.status==='approved'?'(revoga aprovação)':''}</button>
    </form>
   </details>
+  <div className="sa-artwork"><p className="sa-muted">Prévia da arte · rascunhos exibem marca d’água</p>
+   <div className="sa-slides">
+    {Array.from({length:slideCount(p)},(_,idx)=>idx+1).map(slide=><div className="sa-slide" key={slide}>
+     <img src={'/social/arte/'+p.id+'/'+slide} alt={'Prévia da arte '+slide+' para '+p.title} loading="lazy"/>
+     {p.status==='approved'&&<a href={'/social/arte/'+p.id+'/'+slide+'?download=1'} className="sa-download">Baixar PNG {slide}</a>}
+    </div>)}
+   </div>
+  </div>
   <div className="sa-buttons">
    {(p.status==='draft'||p.status==='rejected')&&<form action={reviewSocialDraft}><input type="hidden" name="id" value={p.id}/><input type="hidden" name="version" value={p.version}/><input type="hidden" name="action" value="submit"/><button>Enviar para aprovação</button></form>}
    {p.status==='pending_review'&&<>
@@ -70,6 +79,10 @@ export default async function Page({searchParams}:{searchParams:Promise<{notice?
     </form>
    </section>
   </div>
+  <section className="sa-card sa-starter"><h2>Primeiras publicações da Ekpria</h2>
+   <p>Crie três modelos editáveis de apresentação. Todos começam como rascunho, sem publicação ou aprovação automática.</p>
+   <form action={createStarterSocialDrafts}><button type="submit">Criar 3 rascunhos iniciais</button></form>
+  </section>
   <section className="sa-list"><h2>Fila editorial</h2><p>Revise e aprove cada conteúdo. O Instagram não receberá publicações nesta versão.</p>
    {posts.length?<div className="sa-posts">{posts.map(p=><Post key={p.id} p={p}/>)}</div>:<div className="sa-empty">Nenhuma publicação ainda. Crie um rascunho para começar.</div>}
   </section>
