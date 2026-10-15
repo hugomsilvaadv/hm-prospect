@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "pnpm db && concurrently -k -n web,worker \"next dev -H 127.0.0.1\" \"tsx watch src/worker/index.ts\"",
     "build": "next build",
-    "start": "pnpm db && concurrently -k -n web,worker \"next start -H 127.0.0.1\" \"tsx src/worker/index.ts\"",
+    "start": "pnpm db && next start -H 0.0.0.0 -p ${PORT:-3000}",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
