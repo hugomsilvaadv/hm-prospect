@@ -15,4 +15,11 @@ if(version<2){
   sqlite.pragma('user_version = 2');
  })();
 }
+if((sqlite.pragma('user_version',{simple:true}) as number)<3){
+ sqlite.transaction(()=>{
+  sqlite.exec(fs.readFileSync(path.join(migrations,'0002_social.sql'),'utf8'));
+  sqlite.pragma('user_version = 3');
+ })();
+}
+
 console.log('Database migrated: version '+sqlite.pragma('user_version',{simple:true}));

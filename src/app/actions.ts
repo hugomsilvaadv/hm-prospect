@@ -9,15 +9,16 @@ import { qualifyCompany } from '@/features/leads/qualification';
 import { parseProspectCsv } from '@/features/leads/csv';
 import { normalizeHandle } from '@/lib/rules';
 import { validAdminToken } from '@/lib/security';
+import { validAdminSession, createAdminSession } from '@/lib/admin-session';
 
 async function authenticate():Promise<void>{
  const token=(await cookies()).get('hm_auth')?.value||null;
- if(!validAdminToken(token))throw new Error('Sessão inválida. Entre novamente.');
+ if(!await validAdminSession(token,process.env.APP_ADMIN_TOKEN))throw new Error('Sessão inválida. Entre novamente.');
 }
 export async function signIn(form:FormData):Promise<void>{
  const supplied=String(form.get('token')||'');
  if(!validAdminToken(supplied))redirect('/login?error=1');
- (await cookies()).set('hm_auth',supplied,{httpOnly:true,sameSite:'strict',secure:process.env.NODE_ENV==='production',path:'/',maxAge:8*60*60});
+ (await cookies()).set('hm_auth',await createAdminSession(process.env.APP_ADMIN_TOKEN||''),{httpOnly:true,sameSite:'strict',secure:process.env.NODE_ENV==='production',path:'/',maxAge:8*60*60});
  redirect('/');
 }
 export async function signOut():Promise<void>{(await cookies()).delete('hm_auth');redirect('/login');}
